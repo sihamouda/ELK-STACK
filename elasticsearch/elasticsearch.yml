@@ -2,7 +2,8 @@ cluster.name: "docker-cluster"
 network.host: 0.0.0.0
 
 xpack.license.self_generated.type: basic
-xpack.security.enabled: true
-xpack.monitoring.collection.enabled: false
+#no users
+xpack.security.enabled: false
+xpack.monitoring.collection.enabled: true
 
 #removed ssl for http connection between kibana and elasticsearch
