@@ -1,32 +1,53 @@
 version: '3.8'
+
 services:
   elasticsearch:
     image: elasticsearch:8.3.2
-    ports:
-      - '9200:9200'
     volumes:
-      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - elk
     environment:
-      #jvm max 8g min 2g
-      ES_JAVA_OPTS: "-Xmx8g -Xms2g"
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: changeme
+      KIBANA_PASSWORD: changeme
+      KIBANA_SYSTEM_PASSWORD: changeme
+      LOGSTASH_SYSTEM_PASSWORD: changeme
       discovery.type: single-node
+  
   kibana:
     image: kibana:8.3.2
-    ports:
-      - '5601:5601'
     volumes:
-      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
     depends_on:
       - elasticsearch
+  
   logstash:
     image: logstash:8.3.2
-    ports:
-      - '514:514/udp'
     volumes:
-      #- ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
-      - ./logstash/pipeline.conf:/usr/share/logstash/pipeline/logstash.conf:ro,Z
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline/cisco.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+    ports:
+      - "514:514/udp"
     environment:
-      LS_JAVA_OPTS: -Xms256m -Xmx256m
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
     depends_on:
       - elasticsearch
 
+
+volumes:
+  elasticsearch:
+
+networks:
+  elk:
+    driver: bridge
