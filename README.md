@@ -26,6 +26,9 @@ docker compose exec elasticsearch bin/elasticsearch-reset-password --batch --use
 
 # Updates
 https works fine:
+
   setup.sh contains all the necessery functions to setup the https configuration:
+    
     a.generating a CA certificate
+    
     b.generating Certs for elasticseach kibana and logstash
