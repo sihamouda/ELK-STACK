@@ -18,8 +18,7 @@ services:
       - elk
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
-      LOGSTASH_SYSTEM_PASSWORD": ${LOGSTASH_SYSTEM_PASSWORD:-}
+      #ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
       discovery.type: single-node
 
   kibana:

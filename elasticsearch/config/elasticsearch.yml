@@ -2,15 +2,18 @@ cluster.name: "docker-cluster"
 network.host: 0.0.0.0
 
 ## X-Pack settings
-xpack.security.enabled: true
 xpack.monitoring.collection.enabled: true
 
-xpack.security.transport.ssl.enabled: true
-xpack.security.transport.ssl.key: certs/elasticsearch.key
-xpack.security.transport.ssl.certificate: certs/elasticsearch.crt
-xpack.security.transport.ssl.certificate_authorities: [ "certs/ca.crt" ]
+##enable security
+xpack.security.enabled: false
 
-xpack.security.http.ssl.enabled: true
-xpack.security.http.ssl.key: certs/elasticsearch.key
-xpack.security.http.ssl.certificate: certs/elasticsearch.crt
-xpack.security.http.ssl.certificate_authorities: certs/ca.crt      
+##activate only after generating certs and copy it to config directory
+# xpack.security.transport.ssl.enabled: true
+# xpack.security.transport.ssl.key: certs/elasticsearch.key
+# xpack.security.transport.ssl.certificate: certs/elasticsearch.crt
+# xpack.security.transport.ssl.certificate_authorities: [ "certs/ca.crt" ]
+
+# xpack.security.http.ssl.enabled: true
+# xpack.security.http.ssl.key: certs/elasticsearch.key
+# xpack.security.http.ssl.certificate: certs/elasticsearch.crt
+# xpack.security.http.ssl.certificate_authorities: certs/ca.crt      
