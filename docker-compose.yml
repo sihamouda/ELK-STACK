@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   elasticsearch:
-    image: elasticsearch:8.3.2
+    image: elasticsearch:8.3.3
     env_file: .env
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:$ELASTIC_DIR/config/elasticsearch.yml:ro
@@ -22,7 +22,7 @@ services:
       discovery.type: single-node
 
   kibana:
-    image: kibana:8.3.2
+    image: kibana:8.3.3
     env_file: .env
     volumes:
       - ./kibana/config/kibana.yml:$KIBANA_DIR/config/kibana.yml:ro
@@ -35,23 +35,41 @@ services:
     depends_on:
       - elasticsearch
   
-  logstash:
-    image: logstash:8.3.2
-    env_file: .env
+  # logstash:
+  #   image: logstash:8.3.3
+  #   env_file: .env
+  #   volumes:
+  #     - ./logstash/config/logstash.yml:$LOGSTASH_DIR/config/logstash.yml:ro
+  #     - ./logstash/pipeline/cisco.conf:$LOGSTASH_DIR/pipeline/logstash.conf:ro
+  #     - ./setup/certs:/tmp/certs
+  #     - ./setup/setup.sh:$LOGSTASH_DIR/setup.sh:ro
+  #   ports:
+  #     - "514:514/udp"
+  #   environment:
+  #     LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+  #   networks:
+  #     - elk
+  #   depends_on:
+  #     - elasticsearch
+
+  filebeat:
+    user: root:root
+    build: docker.elastic.co/beats/filebeat:8.3.3
+    restart: always
+    env_file: .env  
+    command: 
+    - -e 
+    - --strict.perms=false
     volumes:
-      - ./logstash/config/logstash.yml:$LOGSTASH_DIR/config/logstash.yml:ro
-      - ./logstash/pipeline/cisco.conf:$LOGSTASH_DIR/pipeline/logstash.conf:ro
-      - ./setup/certs:/tmp/certs
-      - ./setup/setup.sh:$LOGSTASH_DIR/setup.sh:ro
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
-      - "514:514/udp"
-    environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      - "9002:9002"
     networks:
       - elk
     depends_on:
-      - elasticsearch
-
+      - kibana
 
 volumes:
   elasticsearch:

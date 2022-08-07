@@ -7,8 +7,8 @@ monitoring.ui.container.elasticsearch.enabled: true
 ## X-Pack security credentials
 
 ##activate only when enable security in elasticsearch
-# elasticsearch.username: kibana_system
-# elasticsearch.password: "${KIBANA_SYSTEM_PASSWORD}"
+elasticsearch.username: kibana_system
+elasticsearch.password: "${KIBANA_SYSTEM_PASSWORD}"
 
 ##activate only after generating certs and copy it to config directory
 # server.ssl.enabled: true

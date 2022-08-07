@@ -5,7 +5,7 @@ network.host: 0.0.0.0
 xpack.monitoring.collection.enabled: true
 
 ##enable security
-xpack.security.enabled: false
+xpack.security.enabled: true
 
 ##activate only after generating certs and copy it to config directory
 # xpack.security.transport.ssl.enabled: true
