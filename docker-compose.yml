@@ -7,7 +7,6 @@ services:
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:$ELASTIC_DIR/config/elasticsearch.yml:ro
       - elasticsearch:$ELASTIC_DIR/data
-      - ./setup/kEy:$ELASTIC_DIR/kEy:rw
       - ./setup/setup.sh:$ELASTIC_DIR/setup.sh:ro
       - ./setup/instances.yml:$ELASTIC_DIR/config/instances.yml:ro
       - ./setup/certs:/tmp/certs
@@ -54,7 +53,7 @@ services:
 
   filebeat:
     user: root:root
-    build: docker.elastic.co/beats/filebeat:8.3.3
+    image: docker.elastic.co/beats/filebeat:8.3.3
     restart: always
     env_file: .env  
     command: 
@@ -64,8 +63,9 @@ services:
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./setup/certs/:/tmp/certs/:ro
     ports:
-      - "9002:9002"
+      - "9002:9002/udp"
     networks:
       - elk
     depends_on:

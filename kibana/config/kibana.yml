@@ -1,7 +1,7 @@
 server.name: kibana
 server.host: 0.0.0.0
 ##turn http to https after generating certs and copy it to config directory
-elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+elasticsearch.hosts: [ "https://elasticsearch:9200" ]
 monitoring.ui.container.elasticsearch.enabled: true
 
 ## X-Pack security credentials
@@ -11,7 +11,7 @@ elasticsearch.username: kibana_system
 elasticsearch.password: "${KIBANA_SYSTEM_PASSWORD}"
 
 ##activate only after generating certs and copy it to config directory
-# server.ssl.enabled: true
-# server.ssl.certificate: /usr/share/kibana/config/certs/kibana.crt
-# server.ssl.key: /usr/share/kibana/config/certs/kibana.key
-# elasticsearch.ssl.certificateAuthorities: /usr/share/kibana/config/certs/ca.crt
+server.ssl.enabled: true
+server.ssl.certificate: /usr/share/kibana/config/certs/kibana.crt
+server.ssl.key: /usr/share/kibana/config/certs/kibana.key
+elasticsearch.ssl.certificateAuthorities: /usr/share/kibana/config/certs/ca.crt

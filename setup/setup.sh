@@ -29,8 +29,7 @@ generate_ca(){
     echo "==============================================="
     cd $ELASTIC_DIR
     bin/elasticsearch-certutil ca --pem --out /tmp/certs/elk-ca.zip
-    cd /tmp/certs
-    unzip elk-ca.zip
+    cd /tmp/certs && unzip elk-ca.zip
 
     echo "=================== DONE!!! ==================="
     echo "==============================================="
@@ -41,8 +40,7 @@ generate_cert(){
     echo "==============================================="
     cd $ELASTIC_DIR
     bin/elasticsearch-certutil cert --ca-cert /tmp/certs/ca/ca.crt --ca-key /tmp/certs/ca/ca.key --pem --in ./config/instances.yml --out  /tmp/certs/certs.zip 
-    cd /tmp/certs
-    unzip certs.zip
+    cd /tmp/certs && unzip certs.zip
 
     echo "=================== DONE!!! ==================="
     echo "==============================================="
@@ -53,8 +51,7 @@ elastic_cert_cp(){
     echo "==============================================="
     
     cd $ELASTIC_DIR
-    mkdir config/certs
-    cp /tmp/certs/ca/ca.crt /tmp/certs/elasticsearch/* config/certs
+    mkdir config/certs && cp /tmp/certs/ca/ca.crt /tmp/certs/elasticsearch/* config/certs
 
     echo "=================== DONE!!! ==================="
     echo "==============================================="
@@ -65,8 +62,7 @@ kibana_cert_cp(){
     echo "==============================================="
     
     cd $KIBANA_DIR
-    mkdir config/certs
-    cp /tmp/certs/ca/ca.crt /tmp/certs/kibana/* config/certs
+    mkdir config/certs && cp /tmp/certs/ca/ca.crt /tmp/certs/kibana/* config/certs
 
     echo "=================== DONE!!! ==================="
     echo "==============================================="

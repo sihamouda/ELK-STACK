@@ -1,23 +1,36 @@
+filebeat.input:
+- type: syslog
+  format: auto 
+  protocol.udp:
+    host: "filebeat:9002"
+
 filebeat.config:
   modules:
     path: ${path.config}/modules.d/*.yml
     reload.enabled: true
     reload.period: 10s
 
-setup.kibana.host: "http://kibana:5601"
+setup.kibana.host: "https://kibana:5601"
+setup.kibana.ssl.enabled: true
+setup.kibana.ssl.certificate_authorities: ["/tmp/certs/ca/ca.crt"]
+setup.kibana.ssl.certificate: "/tmp/certs/filebeat/filebeat.crt"
+setup.kibana.ssl.key: "/tmp/certs/filebeat/filebeat.key"
 setup.dashboards.enabled: true
 setup.ilm.overwrite: true
 
-filebeat.autodiscover:
-  providers:
-    - type: docker
-      hints.enabled: true
+# filebeat.autodiscover:
+#   providers:
+#     - type: docker
+#       hints.enabled: true
 
 processors:
 - add_cloud_metadata: ~
 
 output.elasticsearch:
   hosts: 'elasticsearch:9200'
-  protocol: http
+  protocol: https
   username: elastic
   password: '${ELASTIC_PASSWORD:}'
+  ssl.certificate_authorities: ["/tmp/certs/ca/ca.crt"]
+  ssl.certificate: "/tmp/certs/filebeat/filebeat.crt"
+  ssl.key: "/tmp/certs/filebeat/filebeat.key"
